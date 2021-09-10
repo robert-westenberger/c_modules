@@ -27,7 +27,7 @@ void push(Stack* stack, int item)
     if (isFull(stack))
         return;
     stack->items[++stack->top] = item;
-    printf("%d pushed to stack\n", item);
+    // printf("%d pushed to stack\n", item);
 }
 
 int pop(Stack* stack)

@@ -28,6 +28,6 @@ typedef struct List {
 extern List *createList();
 extern void pushToList(List** list, int value);
 extern void printList(List* list);
+extern void deleteFromListByValue(List** list, int value);
 // extern Node* searchList(Node* list, int value);
-// extern void deleteFromListByValue(Node** head, int value);
 #endif

@@ -1,7 +1,8 @@
 #ifndef _DATA_STRUCTURES_H_
 #define _DATA_STRUCTURES_H_
 
-typedef struct {  
+/* Stack */
+typedef struct Stack {  
     int top;
     int maxsize;
     int* items;
@@ -9,8 +10,24 @@ typedef struct {
 
 
 extern Stack* createStack(int maxsize);
-extern int isFull(Stack* stack);
-extern int isEmpty(Stack* stack);
+extern int isFullStack(Stack* stack);
+extern int isEmptyStack(Stack* stack);
 extern void push(Stack* stack, int item);
 extern int pop(Stack* stack);
+
+/* SinglyLinkedList Node */
+typedef struct Node {
+    int item; /* data item */
+    struct Node *next;
+} Node;
+
+typedef struct List {
+    struct Node *head;
+} List;
+
+extern List *createList();
+extern void pushToList(List** list, int value);
+extern void printList(List* list);
+// extern Node* searchList(Node* list, int value);
+// extern void deleteFromListByValue(Node** head, int value);
 #endif

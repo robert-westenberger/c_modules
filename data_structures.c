@@ -37,6 +37,14 @@ int pop(Stack* stack)
     return stack->items[stack->top--];
 }
 
+/* DynamicArray */
+DynamicArray *create_DynamicArray() {
+    DynamicArray* array = (DynamicArray*)malloc(sizeof(DynamicArray));
+    array->items= malloc(sizeof(int));
+    array->size = 0;
+    array->capacity=1;
+    return array;
+}
 
 /* List */
 List *createList() {

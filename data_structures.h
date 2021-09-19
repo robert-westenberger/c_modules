@@ -29,5 +29,6 @@ extern List *createList();
 extern void pushToList(List** list, int value);
 extern void printList(List* list);
 extern void deleteFromListByValue(List** list, int value);
+extern void deleteFromListByValue2(List** list, int value);
 // extern Node* searchList(Node* list, int value);
 #endif

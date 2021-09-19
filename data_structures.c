@@ -92,3 +92,17 @@ void deleteFromListByValue(List** list, int value) {
      prev->next = temp->next; 
      free(temp); // Free memory 
 }
+
+/* The more "elegant" implementation of deletion from a linked list
+suggested by linus torvalds. This removes separate branches to deal
+with the special cases of deleting the first element, and the value
+not being in the list at all.  */
+void deleteFromListByValue2(List** list, int value) {
+    Node **pointer_to_list_head = &(*list)->head;
+    while (*pointer_to_list_head) { 
+    if ((*pointer_to_list_head)->item == value) 
+      *pointer_to_list_head = (*pointer_to_list_head)->next; 
+    else 
+      pointer_to_list_head = &((*pointer_to_list_head)->next);
+  }
+}

@@ -1,6 +1,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "data_structures.h"
 
 /* Stack */
@@ -46,6 +47,65 @@ DynamicArray *create_DynamicArray() {
     return array;
 }
 
+int size_DynamicArray(DynamicArray* array) {
+    return array->size;
+}
+
+/* Todo: Am I doing this right..? Does this create any garbage or memory leaks?*/
+bool enlarge_DynamicArray(DynamicArray* array) {
+    int *items = realloc(array->items, sizeof(*(array->items)) * array->capacity * 2);
+    if (items != NULL) {
+        array->capacity = array->capacity * 2;
+        array->items = items;
+        return true;    
+    }
+    return false;
+    
+}
+/* Inserts item into array at index, shifting others to the right if necessary.
+Returns false is there is an error. */
+bool addAtIndex_DynamicArray(DynamicArray* array, int item, int index) {
+    // Check to see if we can add another item to the array..
+    if (size_DynamicArray(array) + 1 > array->capacity) {
+        if (!enlarge_DynamicArray(array)) {
+            return false;
+        }
+    }
+    array->size = array->size + 1;
+    for (int i = size_DynamicArray(array) - 1; i > index; i--) {
+        array->items[i] = array->items[i - 1];
+    }
+    array->items[index] = item;
+    
+    return true;
+}
+int getItemAtIndex_DynamicArray(DynamicArray* array, int index) {
+    return array->items[index];
+}
+/* Removes item into array at index, shifting others to the right if necessary.
+Returns false is there is an error. */
+int removeAtIndex_DynamicArray(DynamicArray* array, int index) {
+    int item = getItemAtIndex_DynamicArray(array, index);
+    for (int i = index + 1; i < size_DynamicArray(array); i++) {
+        array->items[i - 1] = array->items[i];
+    }
+    array->size--;
+    return item;
+}
+
+/* Replaces item into array at index */
+int replaceAtIndex_DynamicArray(DynamicArray* array, int item, int index) {
+    int itemToBeReplaced = getItemAtIndex_DynamicArray(array, index);
+    array->items[index] = item;
+    return itemToBeReplaced;
+}
+
+bool append_DynamicArray(DynamicArray* array, int item) {
+    return addAtIndex_DynamicArray(array, item, array->size);
+}
+bool prepend_DynamicArray(DynamicArray* array, int item) {
+    return addAtIndex_DynamicArray(array, item, 0);
+}
 /* List */
 List *createList() {
     List *p = malloc(sizeof(List));
@@ -107,6 +167,7 @@ with the special cases of deleting the first element, and the value
 not being in the list at all.  */
 void deleteFromListByValue2(List** list, int value) {
     Node **pointer_to_list_head = &(*list)->head;
+    
     while (*pointer_to_list_head) { 
     if ((*pointer_to_list_head)->item == value) 
       *pointer_to_list_head = (*pointer_to_list_head)->next; 

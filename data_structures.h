@@ -45,10 +45,11 @@ extern bool append_DynamicArray(DynamicArray* array, int item);
 /* Gets and returns item at position index. Doesnt check if its a valid
 index or anything, so behavior will be undefined if given a bad index. */
 extern int getItemAtIndex_DynamicArray(DynamicArray* array, int item);
-/* Removes item from array at index, shifting others to the right if necessary,
+/* Removes item from array at index, shifting others to the left if necessary,
 and returns the item. 
 */
 extern int removeAtIndex_DynamicArray(DynamicArray* array, int index);
+
 
 /* Replaces item at given index
 */
@@ -57,7 +58,7 @@ extern int replaceAtIndex_DynamicArray(DynamicArray* array, int item, int index)
 extern int size_DynamicArray(DynamicArray* array);
 
 /* Executes callback for each element in the array. */
-extern void forEach_DynamicArray(DynamicArray* array, int (*callback)(void));
+extern void forEach_DynamicArray(DynamicArray* array, void (*callback)(int item));
 
 
 /* SinglyLinkedList Node */

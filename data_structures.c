@@ -93,6 +93,7 @@ int removeAtIndex_DynamicArray(DynamicArray* array, int index) {
     return item;
 }
 
+
 /* Replaces item into array at index */
 int replaceAtIndex_DynamicArray(DynamicArray* array, int item, int index) {
     int itemToBeReplaced = getItemAtIndex_DynamicArray(array, index);
@@ -106,6 +107,14 @@ bool append_DynamicArray(DynamicArray* array, int item) {
 bool prepend_DynamicArray(DynamicArray* array, int item) {
     return addAtIndex_DynamicArray(array, item, 0);
 }
+
+void forEach_DynamicArray(DynamicArray* array, void (*callback)(int item)) {
+    for (size_t i = 0; i < array->size; i++) {
+        callback(array->items[i]);
+    }
+}
+
+
 /* List */
 List *createList() {
     List *p = malloc(sizeof(List));

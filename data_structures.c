@@ -39,6 +39,9 @@ int pop(Stack* stack)
 }
 
 /* DynamicArray */
+
+/* creates and returns a pointer to a new dynamic array
+of size 0. If there is no more memory, returns NULL. */
 DynamicArray *create_DynamicArray() {
     DynamicArray* array = (DynamicArray*)malloc(sizeof(DynamicArray));
     array->items= malloc(sizeof(int));
@@ -46,12 +49,14 @@ DynamicArray *create_DynamicArray() {
     array->capacity=1;
     return array;
 }
-
+/* Returns size of the dynamic array */
 int size_DynamicArray(DynamicArray* array) {
     return array->size;
 }
 
 /* Todo: Am I doing this right..? Does this create any garbage or memory leaks?*/
+/* Increases capacity of the dynamic array, returning false if there is an
+error. Just for simplicity the capacity is doubled each time. */
 bool enlarge_DynamicArray(DynamicArray* array) {
     int *items = realloc(array->items, sizeof(*(array->items)) * array->capacity * 2);
     if (items != NULL) {
@@ -61,6 +66,8 @@ bool enlarge_DynamicArray(DynamicArray* array) {
     }
     return false;  
 }
+/* Shrinks capacity of the dynamic array, cutting it by half whenever
+the size falls below 1/2 capacity */
 bool shrink_DynamicArray(DynamicArray* array) {
     int *items = realloc(array->items, sizeof(*(array->items)));
     if (items != NULL) {
@@ -87,10 +94,14 @@ bool addAtIndex_DynamicArray(DynamicArray* array, int item, int index) {
     
     return true;
 }
+/* Gets and returns item at position index. Doesnt check if its a valid
+index or anything, so behavior will be undefined if given a bad index. */
 int getItemAtIndex_DynamicArray(DynamicArray* array, int index) {
     return array->items[index];
 }
-
+/* Removes item from array at index, shifting others to the left if necessary,
+and returns the item. 
+*/
 int removeAtIndex_DynamicArray(DynamicArray* array, int index) {
     int item = getItemAtIndex_DynamicArray(array, index);
     for (int i = index + 1; i < size_DynamicArray(array); i++) {
@@ -99,7 +110,10 @@ int removeAtIndex_DynamicArray(DynamicArray* array, int index) {
     array->size--;
     return item;
 }
-
+/* Removes item from array at index, shifting others to the left if necessary,
+and returns the item. The internal static array will be cut in half
+whenever size is below 1/2 of the capacity. 
+*/
 int removeAtIndex2_DynamicArray(DynamicArray* array, int index) {
     if (size_DynamicArray(array) - 1 < (array->capacity) / 2) {
         if (!shrink_DynamicArray(array)) {
@@ -120,14 +134,16 @@ int replaceAtIndex_DynamicArray(DynamicArray* array, int item, int index) {
     array->items[index] = item;
     return itemToBeReplaced;
 }
-
+/* Inserts item into array at the end. Returns false if error. */
 bool append_DynamicArray(DynamicArray* array, int item) {
     return addAtIndex_DynamicArray(array, item, array->size);
 }
+/* Inserts item into array at the beginning, shifting everything else 
+1 index to the right. Returns false if error. */
 bool prepend_DynamicArray(DynamicArray* array, int item) {
     return addAtIndex_DynamicArray(array, item, 0);
 }
-
+/* Executes callback for each element in the array. */
 void forEach_DynamicArray(DynamicArray* array, void (*callback)(int item)) {
     for (size_t i = 0; i < array->size; i++) {
         callback(array->items[i]);

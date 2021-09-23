@@ -31,6 +31,10 @@ extern DynamicArray *create_DynamicArray();
 error. Just for simplicity the capacity is doubled each time. */
 extern bool enlarge_DynamicArray(DynamicArray* array);
 
+/* Shrinks capacity of the dynamic array, cutting it by half whenever
+the size falls below 1/2 capacity */
+extern bool shrink_DynamicArray(DynamicArray* array);
+
 /* Inserts item into array at index, shifting others to the right if necessary.
 Returns false is there is an error. */
 extern bool addAtIndex_DynamicArray(DynamicArray* array, int item, int index);
@@ -50,6 +54,11 @@ and returns the item.
 */
 extern int removeAtIndex_DynamicArray(DynamicArray* array, int index);
 
+/* Removes item from array at index, shifting others to the left if necessary,
+and returns the item. The internal static array will be cut in half
+whenever size is below 1/2 of the capacity. 
+*/
+extern int removeAtIndex2_DynamicArray(DynamicArray* array, int index);
 
 /* Replaces item at given index
 */

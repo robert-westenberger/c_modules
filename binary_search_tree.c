@@ -34,14 +34,27 @@ bool insert_BinarySearchTree(BSTNode **tree, int value) {
     
     return true;
 }
-// printf("%d %d %p %p \n", value, (*tree)->item, (*tree)->left, (*tree)->right);
-// DoublyLinkedNode *newNode;
-//     newNode = malloc(sizeof(DoublyLinkedNode));
-//     newNode->item = value;
-//     newNode->next = (*list)->head;
-//     newNode->prev = NULL;
 
-//     if (isEmpty_DoublyLinkedList(*list)) {
-//         (*list)->tail = newNode;
-//     }
-//     (*list)->head = newNode; 
+
+
+void inOrderTraversal_BinarySearchTree(BSTNode* tree, void (*callback)(BSTNode node)) {
+    if (tree != NULL) {
+        inOrderTraversal_BinarySearchTree(tree->left, callback);
+        callback(*tree);
+        inOrderTraversal_BinarySearchTree(tree->right, callback);
+    }
+}
+void preOrderTraversal_BinarySearchTree(BSTNode* tree, void (*callback)(BSTNode node)) {
+    if (tree != NULL) {
+        callback(*tree);
+        preOrderTraversal_BinarySearchTree(tree->left, callback);
+        preOrderTraversal_BinarySearchTree(tree->right, callback);
+    }
+}
+void postOrderTraversal_BinarySearchTree(BSTNode* tree, void (*callback)(BSTNode node)) {
+    if (tree != NULL) {
+        postOrderTraversal_BinarySearchTree(tree->left, callback);
+        postOrderTraversal_BinarySearchTree(tree->right, callback);
+        callback(*tree);
+    }
+}

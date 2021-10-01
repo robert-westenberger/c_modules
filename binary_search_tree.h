@@ -15,7 +15,13 @@ typedef struct BSTNode {
 postorder traversal */
 extern BSTNode* create_BinarySearchTree();
 extern bool insert_BinarySearchTree(BSTNode **tree, int value);
-extern void inOrderTraversal_BinarySearchTree(BSTNode* tree, void (*callback)(BSTNode node));
-extern void preOrderTraversal_BinarySearchTree(BSTNode* tree, void (*callback)(BSTNode node));
-extern void postOrderTraversal_BinarySearchTree(BSTNode* tree, void (*callback)(BSTNode node));
+extern BSTNode* search_BinarySearchTree(BSTNode *tree, int value);
+extern BSTNode* minimum_BinarySearchTree(BSTNode *tree);
+extern BSTNode* maximum_BinarySearchTree(BSTNode *tree);
+extern BSTNode* deleteValue_BinarySearchTree(BSTNode *tree, int value);
+extern int height_BinarySearchTree(BSTNode *tree);
+extern void print_BinarySearchTree(BSTNode *tree, int row);
+extern void inOrderTraversal_BinarySearchTree(BSTNode *tree, void (*callback)(BSTNode node));
+extern void preOrderTraversal_BinarySearchTree(BSTNode *tree, void (*callback)(BSTNode node));
+extern void postOrderTraversal_BinarySearchTree(BSTNode *tree, void (*callback)(BSTNode node));
 #endif

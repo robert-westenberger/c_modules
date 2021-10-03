@@ -120,15 +120,15 @@ void print_BinarySearchTree(BSTNode *tree, int row) {
     if (tree == NULL) {
         return;
     }
-    
-    for (int i = 0 ; i < row * 2; i ++) {
-         printf("-");
+
+    print_BinarySearchTree(tree->right, row+2);
+
+    printf("\n ");
+    for (int i = 0 ; i < row; i ++) { 
+        printf(" ");
     }
     printf("%d", tree->item);
-    printf("\n");
-    print_BinarySearchTree(tree->right, row+1);
-    print_BinarySearchTree(tree->left, row+1);
-
+    print_BinarySearchTree(tree->left, row+2);
 }
 void inOrderTraversal_BinarySearchTree(BSTNode* tree, void (*callback)(BSTNode node)) {
     if (tree != NULL) {

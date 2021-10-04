@@ -4,37 +4,58 @@
 #include <stdbool.h>
 #include "binary_search_tree.h"
 
+
+/* this returns a bool because it should return false if there is an 
+error allocating more memory.. but  i didnt actually implement that
+*/
+bool insertRecursive_BinarySearchTree(BSTNode **tree, int value) {
+    if (*tree == NULL) {
+        BSTNode *newNode =  malloc(sizeof(BSTNode));
+        newNode->item = value;
+        newNode->left = NULL;
+        newNode->right = NULL;
+        *tree = newNode;
+        return true;
+    }
+    if (value < (*tree)->item) { 
+        insertRecursive_BinarySearchTree(&(*tree)->left, value);
+    } else {
+        insertRecursive_BinarySearchTree(&(*tree)->right, value);
+    }
+    return true;
+    
+}
+
 bool insert_BinarySearchTree(BSTNode **tree, int value) {
-    BSTNode *currNode = NULL;
-    BSTNode *treePtr = *tree;
-    BSTNode *newNode =  malloc(sizeof(BSTNode));
-    newNode->item = value;
-    newNode->left = NULL;
-    newNode->right = NULL;
+   BSTNode *treePtr = *tree;
+   BSTNode *newNode =  malloc(sizeof(BSTNode));
+   BSTNode *newNodeParent = NULL;
+   
+   newNode->item = value;
+   newNode->left = NULL;
+   newNode->right = NULL;
 
-
-    while (treePtr != NULL) {
-        currNode = treePtr;
+   while (treePtr != NULL) {
+        newNodeParent = treePtr;
         if ((treePtr)->item > value) {
             treePtr = (treePtr)->left;
         } else {
             treePtr = (treePtr)->right;
         }
     }
-    newNode->parent = currNode;
-    if (currNode == NULL) {
+
+    if (newNodeParent == NULL) {
         *tree = newNode;
     } else {
-        if (currNode->item > value) {
-            currNode->left = newNode;
+        if (newNodeParent->item > value) {
+            newNodeParent->left = newNode;
         } else {
-            currNode->right = newNode;
+            newNodeParent->right = newNode;
         }
     }
     
     return true;
 }
-
 
 BSTNode* search_BinarySearchTree(BSTNode *tree, int value) {
     if (tree == NULL) {

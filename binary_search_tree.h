@@ -5,7 +5,6 @@
 
 typedef struct BSTNode {
     int item;
-    struct BSTNode *parent;
     struct BSTNode *left;
     struct BSTNode *right;
 } BSTNode;
@@ -13,8 +12,8 @@ typedef struct BSTNode {
 
 /* Operations: Create, insert, search, delete, inorder traversal, preorder traversal
 postorder traversal */
-extern BSTNode* create_BinarySearchTree();
 extern bool insert_BinarySearchTree(BSTNode **tree, int value);
+extern bool insertRecursive_BinarySearchTree(BSTNode **tree, int value);
 extern BSTNode* search_BinarySearchTree(BSTNode *tree, int value);
 extern BSTNode* minimum_BinarySearchTree(BSTNode *tree);
 extern BSTNode* maximum_BinarySearchTree(BSTNode *tree);

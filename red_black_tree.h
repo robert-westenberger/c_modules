@@ -22,7 +22,7 @@ extern bool insert_RedBlackTree(RBTNode **tree, int value);
 extern RBTNode* search_RedBlackTree(RBTNode *tree, int value);
 extern RBTNode* minimum_RedBlackTree(RBTNode *tree);
 extern RBTNode* maximum_RedBlackTree(RBTNode *tree);
-extern RBTNode* deleteValue_RedBlackTree(RBTNode *tree, int value);
+extern RBTNode* deleteValue_RedBlackTree(RBTNode **root, int value);
 extern int height_RedBlackTree(RBTNode *tree);
 extern void print_RedBlackTree(RBTNode *tree, int row);
 extern void inOrderTraversal_RedBlackTree(RBTNode *tree, void (*callback)(RBTNode node));

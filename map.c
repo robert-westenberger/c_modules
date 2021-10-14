@@ -38,9 +38,7 @@ MapNode* set_HashMap(MapNode* hashMap[HASHSIZE], char* key, int value) {
         np->next = *(hashMap + hashval);
         *(hashMap + hashval) = np;
 
-    } else /* already there */
-        free((void *) &(np->value)); /*free previous defn */
-    if ((np->value = value) == 0) 
-       return NULL;
+    } 
+    np->value = value;
     return np;
 }

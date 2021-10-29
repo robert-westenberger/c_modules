@@ -1,6 +1,7 @@
 /** 
  * Separate Chaining map using linked lists.
  * From https://www.andreinc.net/2021/10/02/implementing-hash-tables-in-c-part-1
+ * This is a naive implementation, it is not cache friendly since it use a linked list.
  */
 
 #include <stdlib.h>

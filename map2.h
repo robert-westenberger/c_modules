@@ -1,13 +1,14 @@
 /** 
  * Separate Chaining map using linked lists.
  * From https://www.andreinc.net/2021/10/02/implementing-hash-tables-in-c-part-1
+ * This is a naive implementation, it is not cache friendly since it use a linked list.
  */
-
-#ifndef MAP2_H
-#define MAP2_H
 #include <stdint.h>
 #include <string.h>
 #include <stdbool.h>
+#ifndef MAP2_H
+#define MAP2_H
+
 #define HASH_CAPACITY_INIT 32
 #define HASH_CAPACITY_MULT 2
 #define HASH_GROWTH 1
@@ -57,7 +58,7 @@ extern void print_MapHashTable(MapHashTable* hashtable, void (*print_key)(const 
 extern uint32_t numCol_MapHashTable(MapHashTable* hashtable);
 
 /* String Operations */
-// String operations
+
 
 uint32_t string_hash(const void *data, void *arg);
 void* string_cp(const void *data, void *arg);

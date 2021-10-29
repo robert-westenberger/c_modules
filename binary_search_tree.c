@@ -23,7 +23,6 @@ bool insertRecursive_BinarySearchTree(BSTNode **tree, int value) {
         insertRecursive_BinarySearchTree(&(*tree)->right, value);
     }
     return true;
-    
 }
 
 bool insert_BinarySearchTree(BSTNode **tree, int value) {

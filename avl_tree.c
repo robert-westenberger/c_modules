@@ -81,55 +81,48 @@ AVLNode *leftRotate(AVLNode *x)
 	return y;
 }
 
-AVLNode *insert_AVLTree(AVLTree *tree, const void *data) {
-	AVLNode** nodePtr = &tree->head;
-	if (*nodePtr == NULL) {
-		*nodePtr = newNode(tree, data);
-		return *nodePtr;
+AVLNode *insert_AVLTree(AVLTree *tree, AVLNode *node, const void *data) {
+	if (node == NULL) {
+		return (newNode(tree, data));
 	}
-	while (*nodePtr != NULL) {
-		if (tree->data_ops.compare(data, (*nodePtr)->data) < 0) {
-			*nodePtr = (*nodePtr)->left;
-		}
-		else if (tree->data_ops.compare(data, (*nodePtr)->data) > 0) {
-			*nodePtr = (*nodePtr)->right;
-		}
-		else {
-			return *nodePtr;
-		}
+	if (tree->data_ops.compare(data, node->data) < 0) {
+		node->left = insert_AVLTree(tree, node->left, data);
 	}
-	(*nodePtr)->height = 1 + max(height((*nodePtr)->left), height((*nodePtr)->right));
-	int balance = getBalance(*nodePtr);
+	else if (tree->data_ops.compare(data, node->data) > 0) {
+		node->right = insert_AVLTree(tree, node->right, data);
+	}
+	else {
+		return node;
+	}
 
-	// tree->data_ops.compare(data, (*nodePtr)->data) > 0
-
-	if (balance > 1 && tree->data_ops.compare(data, (*nodePtr)->left->data) < 0)
+	node->height = 1 + max(height(node->left),
+												 height(node->right));
+	int balance = getBalance(node);
+	if (balance > 1 && tree->data_ops.compare(data, node->left->data) < 0)
 	{
-		return rightRotate(*nodePtr);
+		return rightRotate(node);
 	}
-	
 
 	// Right Right Case
-	if (balance < -1 && tree->data_ops.compare(data, (*nodePtr)->right->data) > 0) {
-		return leftRotate(*nodePtr);
+	if (balance < -1 && tree->data_ops.compare(data, node->right->data) > 0)
+	{
+		return leftRotate(node);
 	}
-		
 
 	// Left Right Case
-	if (balance > 1 && tree->data_ops.compare(data, (*nodePtr)->left->data) > 0)
+	if (balance > 1 && tree->data_ops.compare(data, node->left->data) > 0)
 	{
-		(*nodePtr)->left = leftRotate((*nodePtr)->left);
-		return rightRotate(*nodePtr);
+		node->left = leftRotate(node->left);
+		return rightRotate(node);
 	}
 
 	// Right Left Case
-	if (balance < -1 && tree->data_ops.compare(data, (*nodePtr)->right->data) < 0)
+	if (balance < -1 && tree->data_ops.compare(data, node->right->data) < 0)
 	{
-		(*nodePtr)->right = rightRotate((*nodePtr)->right);
-		return leftRotate(*nodePtr);
+		node->right = rightRotate(node->right);
+		return leftRotate(node);
 	}
-	return *nodePtr;
-	
+	return node;
 }
 
 /* String operations*/
@@ -172,4 +165,44 @@ void string_print(const void *data)
 	printf("%s\n", (const char *)data);
 }
 
-AVLNodeDataOps data_ops_string = {string_cp, string_free, string_eq, string_compare};
+/* Int operations*/
+
+void *int_cp(const void *data)
+{
+	const int *input = (const int *)data;
+	int *result;
+	result = malloc(sizeof(*result));
+	if (NULL == result)
+	{
+		fprintf(stderr, "malloc() failed in file %s at line # %d", __FILE__, __LINE__);
+		exit(EXIT_FAILURE);
+	}
+	// strcpy(result, input);
+	*result = *input; 
+	return result;
+}
+bool int_eq(const void *data1, const void *data2)
+{
+	const int *int1 = (const int *)data1;
+	const int *int2 = (const int *)data2;
+	return *int1 == *int2;
+}
+
+int int_compare(const void *data1, const void *data2)
+{
+	const int *int1 = (const int *)data1;
+	const int *int2 = (const int *)data2;
+	return *int1 - *int2;
+}
+
+void int_free(void *data)
+{
+	free(data);
+}
+void int_print(const void *data)
+{
+	printf("%d\n", *(const int *)data);
+}
+
+AVLNodeDataOps data_ops_string = {string_cp, string_free, string_eq, string_compare, string_print};
+AVLNodeDataOps data_ops_int = {int_cp, int_free, int_eq, int_compare, int_print};

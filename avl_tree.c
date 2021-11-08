@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <inttypes.h>
+#include <limits.h>
 #include "avl_tree.h"
 #include "helpers.h"
 
@@ -80,48 +81,96 @@ AVLNode *leftRotate(AVLNode *x)
 	// Return new root
 	return y;
 }
+void debugRecursivePrintHelperFunction(int recurseLevel, char* debugString) {
+	for (int i = 0; i < recurseLevel; i++) {
+		printf("  ");
+	}
+	printf("%s", debugString);
+}
+AVLNode *insert_AVLTree(AVLTree *tree, AVLNode *node, const void *data, int recurseCount) {
+	const int data_value = *(const int *)data;
+	int current_node_value = INT_MIN;
+	int current_node_left_value = INT_MIN;
+	int current_node_right_value = INT_MIN;
+	char* debugString = malloc(sizeof(char) * 1000);
+	sprintf(debugString, "Attempting to insert: %d \n", data_value);
+	debugRecursivePrintHelperFunction(recurseCount, debugString);
 
-AVLNode *insert_AVLTree(AVLTree *tree, AVLNode *node, const void *data) {
+	if (node != NULL) {
+		current_node_value = *(const int *)node->data;
+	}
 	if (node == NULL) {
+		sprintf(debugString, "Creating a new node with: %d \n", data_value);
+		debugRecursivePrintHelperFunction(recurseCount, debugString);
 		return (newNode(tree, data));
 	}
 	if (tree->data_ops.compare(data, node->data) < 0) {
-		node->left = insert_AVLTree(tree, node->left, data);
+		sprintf(debugString, "Recursing down node->left to insert %d \n", data_value);
+		debugRecursivePrintHelperFunction(recurseCount, debugString);
+		node->left = insert_AVLTree(tree, node->left, data, recurseCount + 1);
 	}
 	else if (tree->data_ops.compare(data, node->data) > 0) {
-		node->right = insert_AVLTree(tree, node->right, data);
+		sprintf(debugString, "Recursing down node->right to insert %d \n", data_value);
+		debugRecursivePrintHelperFunction(recurseCount, debugString);
+		node->right = insert_AVLTree(tree, node->right, data, recurseCount + 1);
 	}
 	else {
+		printf("Returning node.. bsts cant have duplicate vals \n");
 		return node;
 	}
+	current_node_value = *(const int *)node->data;
+	if (node != NULL && node->left != NULL && node->left->data != NULL) {
+		current_node_left_value = *(const int *)node->left->data;
+	}
+	if (node != NULL && node->right != NULL && node->right->data != NULL)
+	{
+		current_node_right_value = *(const int *)node->right->data;
+	}
+	sprintf(debugString, "Setting the height of the node with value %d (inserting %d) \n", current_node_value, data_value);
+	debugRecursivePrintHelperFunction(recurseCount, debugString);
 
-	node->height = 1 + max(height(node->left),
-												 height(node->right));
+	node->height = 1 + max(height(node->left), height(node->right));
 	int balance = getBalance(node);
+
 	if (balance > 1 && tree->data_ops.compare(data, node->left->data) < 0)
 	{
+		sprintf(debugString, "right rotating node with value %d (inserting %d) \n", current_node_value, data_value);
+		debugRecursivePrintHelperFunction(recurseCount, debugString);
 		return rightRotate(node);
 	}
 
 	// Right Right Case
 	if (balance < -1 && tree->data_ops.compare(data, node->right->data) > 0)
 	{
+		sprintf(debugString, "left rotating node with value %d (inserting %d) \n", current_node_value,data_value);
+		debugRecursivePrintHelperFunction(recurseCount, debugString);
 		return leftRotate(node);
 	}
 
 	// Left Right Case
 	if (balance > 1 && tree->data_ops.compare(data, node->left->data) > 0)
 	{
+		sprintf(debugString, "left rotating node with value %d (inserting %d), then... ", current_node_value, data_value);
+		debugRecursivePrintHelperFunction(recurseCount, debugString);
 		node->left = leftRotate(node->left);
+		sprintf(debugString, "right rotating node with value %d (inserting %d) \n", current_node_value, data_value);
+		debugRecursivePrintHelperFunction(recurseCount, debugString);
 		return rightRotate(node);
 	}
 
 	// Right Left Case
 	if (balance < -1 && tree->data_ops.compare(data, node->right->data) < 0)
 	{
+		sprintf(debugString, "right rotating node with value %d (inserting %d), then... ", current_node_value, data_value);
+		debugRecursivePrintHelperFunction(recurseCount, debugString);
 		node->right = rightRotate(node->right);
+		sprintf(debugString, "right rotating node with value %d (inserting %d), \n", current_node_value, data_value);
+		debugRecursivePrintHelperFunction(recurseCount, debugString);
 		return leftRotate(node);
 	}
+	
+	sprintf(debugString, "Finally returning node with value %d (inserting %d) \n", current_node_value, data_value);
+	debugRecursivePrintHelperFunction(recurseCount, debugString);
 	return node;
 }
 
@@ -201,7 +250,7 @@ void int_free(void *data)
 }
 void int_print(const void *data)
 {
-	printf("%d\n", *(const int *)data);
+	printf("%d->", *(const int *)data);
 }
 
 AVLNodeDataOps data_ops_string = {string_cp, string_free, string_eq, string_compare, string_print};

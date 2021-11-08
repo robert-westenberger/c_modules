@@ -28,7 +28,7 @@ typedef struct AVLTree
 
 extern AVLTree *create_AVLTree(AVLNodeDataOps data_ops);
 extern bool contains_AVLTree(AVLTree *tree, const void *data);
-extern AVLNode *insert_AVLTree(AVLTree *tree, AVLNode *node, const void *data);
+extern AVLNode *insert_AVLTree(AVLTree *tree, AVLNode *node, const void *data, int recurseCount);
 extern void deleteValue_AVLTree(AVLTree *tree, const void *data);
 
 void *string_cp(const void *data);
